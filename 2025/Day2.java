@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 
 public class Day2 {
   public static void main(String[] args) throws FileNotFoundException {
-    File obj = new File("../inputs/day2.txt");
+    File obj = new File("./inputs/day2.txt");
 
     Set<Long> result = new HashSet<Long>();
     try (Scanner scn = new Scanner(obj)) {

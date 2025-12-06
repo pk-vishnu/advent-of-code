@@ -17,11 +17,11 @@ public class Day6 {
       }
     }
 
-    long rows = inputs.size();
-    long cols = inputs.get(0).length;
-
     String[] symbols = inputs.get(inputs.size() - 1);
     inputs.remove(inputs.size() - 1);
+
+    long rows = inputs.size();
+    long cols = inputs.get(0).length;
 
     long result = 0;
     for (int c = 0; c < cols; c++) {
@@ -29,11 +29,11 @@ public class Day6 {
       long tmp = 0;
       if (sym.equals("*")) {
         tmp = 1;
-        for (int r = 0; r < rows - 1; r++) {
+        for (int r = 0; r < rows; r++) {
           tmp *= Long.parseLong(inputs.get(r)[c]);
         }
       } else if (sym.equals("+")) {
-        for (int r = 0; r < rows - 1; r++) {
+        for (int r = 0; r < rows; r++) {
           tmp += Long.parseLong(inputs.get(r)[c]);
         }
       }

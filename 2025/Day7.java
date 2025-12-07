@@ -3,18 +3,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Day7 {
-  static class Beam {
-    int r, c;
-
-    Beam(int r, int c) {
-      this.r = r;
-      this.c = c;
-    }
-  }
-
   static ArrayList<char[]> manifold = new ArrayList<>();
-  static int rows, cols;
+  static int rows, cols, splits;
   static Long[][] memo;
+  static boolean[][] visited;
 
   public static void main(String[] args) throws FileNotFoundException {
     File obj = new File("./inputs/day7.txt");
@@ -38,40 +30,10 @@ public class Day7 {
     rows = manifold.size();
     cols = manifold.get(0).length;
     memo = new Long[rows][cols];
+    visited = new boolean[rows][cols];
 
-    // Queue<Beam> q = new LinkedList<>();
-    // q.add(new Beam(0, sc));
-    //
-    // boolean[][] visited = new boolean[rows][cols];
-    //
-    // int splits = 0;
-    //
-    // while (!q.isEmpty()) {
-    // Beam b = q.poll();
-    // int nr = b.r + 1;
-    // int nc = b.c;
-    //
-    // if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) {
-    // continue;
-    // }
-    //
-    // if (visited[nr][nc]) {
-    // continue;
-    // }
-    // visited[nr][nc] = true;
-    //
-    // char ch = manifold.get(nr)[nc];
-    //
-    // if (ch == '.') {
-    // q.add(new Beam(nr, nc));
-    // } else if (ch == '^') {
-    // splits++;
-    // q.add(new Beam(nr, nc - 1));
-    // q.add(new Beam(nr, nc + 1));
-    // }
-    // }
-
-    long splits = solve(0, sc);
+    dfs(0, sc);
+    // long splits = solve(0, sc); pt2
     System.out.println(splits);
   }
 
@@ -95,5 +57,29 @@ public class Day7 {
     }
     memo[r][c] = result;
     return result;
+  }
+
+  static void dfs(int r, int c) {
+    int nr = r + 1;
+    int nc = c;
+    if (nr >= rows) {
+      return;
+    }
+    if (visited[nr][nc]) {
+      return;
+    }
+    visited[nr][nc] = true;
+
+    if (manifold.get(nr)[nc] == '.') {
+      dfs(nr, nc);
+    } else if (manifold.get(nr)[nc] == '^') {
+      splits++;
+      if (nc - 1 >= 0) {
+        dfs(nr, nc - 1);
+      }
+      if (nc + 1 < cols) {
+        dfs(nr, nc + 1);
+      }
+    }
   }
 }

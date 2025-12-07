@@ -12,10 +12,12 @@ public class Day7 {
     }
   }
 
+  static ArrayList<char[]> manifold = new ArrayList<>();
+  static int rows, cols;
+  static Long[][] memo;
+
   public static void main(String[] args) throws FileNotFoundException {
     File obj = new File("./inputs/day7.txt");
-
-    ArrayList<char[]> manifold = new ArrayList<>();
 
     try (Scanner scn = new Scanner(obj)) {
       while (scn.hasNextLine()) {
@@ -33,40 +35,65 @@ public class Day7 {
       }
     }
 
-    int rows = manifold.size();
-    int cols = manifold.get(0).length;
+    rows = manifold.size();
+    cols = manifold.get(0).length;
+    memo = new Long[rows][cols];
 
-    Queue<Beam> q = new LinkedList<>();
-    q.add(new Beam(0, sc));
+    // Queue<Beam> q = new LinkedList<>();
+    // q.add(new Beam(0, sc));
+    //
+    // boolean[][] visited = new boolean[rows][cols];
+    //
+    // int splits = 0;
+    //
+    // while (!q.isEmpty()) {
+    // Beam b = q.poll();
+    // int nr = b.r + 1;
+    // int nc = b.c;
+    //
+    // if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) {
+    // continue;
+    // }
+    //
+    // if (visited[nr][nc]) {
+    // continue;
+    // }
+    // visited[nr][nc] = true;
+    //
+    // char ch = manifold.get(nr)[nc];
+    //
+    // if (ch == '.') {
+    // q.add(new Beam(nr, nc));
+    // } else if (ch == '^') {
+    // splits++;
+    // q.add(new Beam(nr, nc - 1));
+    // q.add(new Beam(nr, nc + 1));
+    // }
+    // }
 
-    boolean[][] visited = new boolean[rows][cols];
-
-    int splits = 0;
-
-    while (!q.isEmpty()) {
-      Beam b = q.poll();
-      int nr = b.r + 1;
-      int nc = b.c;
-
-      if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) {
-        continue;
-      }
-
-      if (visited[nr][nc]) {
-        continue;
-      }
-      visited[nr][nc] = true;
-
-      char ch = manifold.get(nr)[nc];
-
-      if (ch == '.') {
-        q.add(new Beam(nr, nc));
-      } else if (ch == '^') {
-        splits++;
-        q.add(new Beam(nr, nc - 1));
-        q.add(new Beam(nr, nc + 1));
-      }
-    }
+    long splits = solve(0, sc);
     System.out.println(splits);
+  }
+
+  static long solve(int r, int c) {
+    if (r >= rows) {
+      return 1;
+    }
+    if (c < 0 || c >= cols) {
+      return 1;
+    }
+    if (memo[r][c] != null) {
+      return memo[r][c];
+    }
+
+    char ch = manifold.get(r)[c];
+    long result = 0;
+    if (ch == '.' || ch == 'S') {
+      result = solve(r + 1, c);
+    } else if (ch == '^') {
+      result = solve(r + 1, c - 1) + solve(r + 1, c + 1);
+    }
+    memo[r][c] = result;
+    return result;
   }
 }

@@ -82,20 +82,35 @@ public class Day8 {
     }
     edges.sort((e1, e2) -> Long.compare(e1.d, e2.d));
 
-    for (int i = 0; i < 1000 && i < edges.size(); i++) {
-      Edge e = edges.get(i);
-      union(e.a, e.b);
-    }
+    // part1
+    // for (int i = 0; i < 1000 && i < edges.size(); i++) {
+    // Edge e = edges.get(i);
+    // union(e.a, e.b);
+    // }
+    //
+    // List<Integer> components = new ArrayList<>();
+    // for (int i = 0; i < n; i++) {
+    // if (find(i) == i) {
+    // components.add(size[i]);
+    // }
+    // }
+    // components.sort((a, b) -> Integer.compare(b, a));
+    //
+    // long result = (long) components.get(0) * components.get(1) *
+    // components.get(2);
+    // System.out.println(result);
 
-    List<Integer> components = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-      if (find(i) == i) {
-        components.add(size[i]);
+    int components = n;
+    for (Edge e : edges) {
+      if (union(e.a, e.b)) {
+        components--;
+        if (components == 1) {
+          long x1 = coords.get(e.a)[0];
+          long x2 = coords.get(e.b)[0];
+          System.out.println(x1 * x2);
+          break;
+        }
       }
     }
-    components.sort((a, b) -> Integer.compare(b, a));
-
-    long result = (long) components.get(0) * components.get(1) * components.get(2);
-    System.out.println(result);
   }
 }
